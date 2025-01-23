@@ -1,0 +1,24 @@
+Tap #,Normalized delay,Power in [dB],Fading distribution,Type
+1,0.0,0.0,Rayleigh,TDL-B
+2,0.1072,-2.2,Rayleigh,TDL-B
+3,0.2155,-4.0,Rayleigh,TDL-B
+4,0.2095,-3.2,Rayleigh,TDL-B
+5,0.287,-9.8,Rayleigh,TDL-B
+6,0.2986,-1.2,Rayleigh,TDL-B
+7,0.3752,-3.4,Rayleigh,TDL-B
+8,0.5055,-5.2,Rayleigh,TDL-B
+9,0.3681,-7.6,Rayleigh,TDL-B
+10,0.3697,-3.0,Rayleigh,TDL-B
+11,0.57,-8.9,Rayleigh,TDL-B
+12,0.5283,-9.0,Rayleigh,TDL-B
+13,1.1021,-4.8,Rayleigh,TDL-B
+14,1.2756,-5.7,Rayleigh,TDL-B
+15,1.5474,-7.5,Rayleigh,TDL-B
+16,1.7842,-1.9,Rayleigh,TDL-B
+17,2.0169,-7.6,Rayleigh,TDL-B
+18,2.8294,-12.2,Rayleigh,TDL-B
+19,3.0219,-9.8,Rayleigh,TDL-B
+20,3.6187,-11.4,Rayleigh,TDL-B
+21,4.1067,-14.9,Rayleigh,TDL-B
+22,4.279,-9.2,Rayleigh,TDL-B
+23,4.7834,-11.3,Rayleigh,TDL-B

@@ -1,0 +1,3 @@
+RNTI,numDLTotal,numDLnew,numReTx_DL,avgMCS_DL,numULTotal,numULnew,numReTx_UL,avgMCS_UL,DL_throughput (bits),DL_goodput (bits),UL_throughput (bits),UL_goodput (bits),TTI,prf,FreqOffset,PulseWidth,BW,slotStartIdx,numPulses,pulseIdxOffset_ms
+1,119,71,48,5.0,131,64,67,5.0,10560,6240,23920,11560,2,1000,0,0.0005,5000000,6000,1,0.00015625
+2,124,77,47,5.0,115,58,57,5.0,10592,6512,20584,10040,2,1000,0,0.0005,5000000,6000,1,0.00015625
