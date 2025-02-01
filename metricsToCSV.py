@@ -324,6 +324,6 @@ def generateMainCSV(root_dir):
 
 # Main
 if __name__ == "__main__":
-    root_directory = "./Run_30Khz_PulseDuration3/"  # Change this to the root directory of your files
+    root_directory = "./Run_30Khz_BW_test3_prf3.002k/"  # Change this to the root directory of your files
     process_directory(root_directory)
     generateMainCSV(root_directory)
