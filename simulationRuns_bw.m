@@ -1,7 +1,7 @@
 % File: /Users/ericforbes/Documents/GitHub/NRTPIS/simulationRuns.m
 
 % Initialize simulation parameters
-simParametersBase.folderName = 'Run_30Khz_BW_test3_prf3.002k/';
+simParametersBase.folderName = 'Run_30Khz_BW_test3_prf3.002k_w_20atten/';
 simParametersBase.numerology = 1; % 0 = 15KHz, 1 = 30KHz
 
 % Define supported bandwidths
@@ -50,7 +50,7 @@ parfor i = 1:numSimulations
     simParameters.PulseWidth = 50 * 1e-6; %ttiPairs(i, 2);%
     simParameters.PulseBW = ttiPairs(i, 2);
     simParameters.PulseBWoffset = 15 -  (simParameters.PulseBW)/2%9.5
-    simParameters.pulseAttenuation = 0%ttiPairs(i, 3);
+    simParameters.pulseAttenuation = -20%ttiPairs(i, 3);
     % Set slotOrSymbol based on TTIGranularity
     if simParameters.TTIGranularity == 14
         simParameters.slotOrSymbol = 0;
