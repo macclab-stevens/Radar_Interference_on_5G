@@ -15,7 +15,10 @@ Each of the runs are started with a simulation_*.mlx file that puts the variable
 
 # Experiment Setup
 
+## 20MHz B78 with UE attached w/ 10Mbps DL Iperf Test
 <img width="1880" alt="image" src="https://github.com/user-attachments/assets/edde6682-7396-4aba-8493-aa668ed2cf8c" />
 
 
+## Narrow Pulse Radar on next to 5G Signal with No UE data. 
 <img width="934" alt="image" src="https://github.com/user-attachments/assets/05acc3bf-740b-4779-98ba-8043d394cce4" />
+
