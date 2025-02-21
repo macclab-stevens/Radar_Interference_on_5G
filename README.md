@@ -27,7 +27,11 @@ These are GQRX Images from the limeSDR Mini I have that is measuring the RF Syst
 <img width="1664" alt="image" src="https://github.com/user-attachments/assets/97dbc9c5-705c-49b3-9ee6-6e557bec653e" />
 
 ### 20MHZ BW 5000Hz PRF
+Radar Tx Gain: 45
 <img width="1675" alt="image" src="https://github.com/user-attachments/assets/1a1605d0-2e55-4753-8afb-dfde45f9d735" />
+
+Radar Tx Gain: 80
+<img width="1672" alt="image" src="https://github.com/user-attachments/assets/2eb98e78-23f1-4858-99e7-2270fbb283cc" />
 
 
 ### 1MHz BW 500Hz PRF
