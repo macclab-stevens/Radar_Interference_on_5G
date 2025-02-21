@@ -12,3 +12,10 @@ Here goodput is the measure of "Actual throughput" the user would see. The diffe
 
 # How it works:
 Each of the runs are started with a simulation_*.mlx file that puts the variables as an array into a NxM Matrix. The simluation then runs a parfor (Parallel for loops) based on the size of the matrix and calls the main() script that many times. Each simulation run is saved as a .mat file. However thousand of these files ends up beging fairly large. E.g. a 2000 simulation run can be over 3Gb. Therefore we do not save the .mat files. Instead there is a .mat to csv conversion script that is run on the repo and then saved.
+
+# Experiment Setup
+
+<img width="1880" alt="image" src="https://github.com/user-attachments/assets/edde6682-7396-4aba-8493-aa668ed2cf8c" />
+
+
+<img width="934" alt="image" src="https://github.com/user-attachments/assets/05acc3bf-740b-4779-98ba-8043d394cce4" />
