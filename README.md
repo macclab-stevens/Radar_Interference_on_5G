@@ -23,4 +23,12 @@ Each of the runs are started with a simulation_*.mlx file that puts the variable
 <img width="934" alt="image" src="https://github.com/user-attachments/assets/05acc3bf-740b-4779-98ba-8043d394cce4" />
 
 ## Interference 
+These are GQRX Images from the limeSDR Mini I have that is measuring the RF System. 
 <img width="1664" alt="image" src="https://github.com/user-attachments/assets/97dbc9c5-705c-49b3-9ee6-6e557bec653e" />
+
+### 20MHZ BW 5000Hz PRF
+<img width="1675" alt="image" src="https://github.com/user-attachments/assets/1a1605d0-2e55-4753-8afb-dfde45f9d735" />
+
+
+### 1MHz BW 500Hz PRF
+<img width="1650" alt="image" src="https://github.com/user-attachments/assets/fec7b9a2-a750-4bfa-b30a-5186063ad903" />
