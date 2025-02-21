@@ -22,3 +22,5 @@ Each of the runs are started with a simulation_*.mlx file that puts the variable
 ## Narrow Pulse Radar on next to 5G Signal with No UE data. 
 <img width="934" alt="image" src="https://github.com/user-attachments/assets/05acc3bf-740b-4779-98ba-8043d394cce4" />
 
+## Interference 
+<img width="1664" alt="image" src="https://github.com/user-attachments/assets/97dbc9c5-705c-49b3-9ee6-6e557bec653e" />
