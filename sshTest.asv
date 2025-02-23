@@ -1,0 +1,6 @@
+remote_user = 'eric';
+remote_host = '10.1.0.4';
+fileName = 't77';  % Example argument
+
+ssh_command = sprintf('ssh m70q /home/eric/srsRAN_Project/scripts/PRFLogCollectorCTL.sh start %s', fileName);
+system(ssh_command);

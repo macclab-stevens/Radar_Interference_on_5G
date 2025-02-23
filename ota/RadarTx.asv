@@ -1,0 +1,58 @@
+function resultsTable = RadarTx(simParameters)
+
+folderName = 'Run_30Khz_PulsePowerLevels_3/';
+numerology = 1; % 0 = 15KHz, 1 = 30KHz
+
+% Sampling frequency
+fs = 7680000 * 2^numerology;
+fc = 3410.1e6 %Center Frequency
+prf = 5;%Hz
+% PulseWidth = 50 * 1e-6; 
+PulseWidth = .1; 
+pulseAttenuation = 0;
+PulseBW = 20e6;
+PulseBWoffset = 0e6;%9.5e6;
+NumFramesSim = 5000; %each is 10ms. 5= 50ms, 10 = 100ms, 100 = 1s
+
+
+% Radar Setup    
+nfft1 = 512*2;
+fs = 30720000
+w = taylorwin(200,4,-35);
+freq = nlfmspec2freq(PulseBW ,w);
+
+
+numSamps = (7680*2*NumFramesSim*10*2^(numerology))
+
+fm = phased.CustomFMWaveform( ...
+    'SampleRate',fs, ...
+    'PulseWidth',PulseWidth, ...
+    'NumPulses',numPulses, ...
+    'PRF',prf, ...
+    'FrequencyModulation',freq, ...
+    'FrequencyOffsetSource','Property', ...
+    'FrequencyOffset',FreqOffset, ...
+    OutputFormat='Pulses', ...
+    NumSamples=numSamps...
+    )
+% bbWriter = comm.BasebandFileWriter('prf100.bb',fs,fc)
+% bbWriter(fm())
+% release(bbWriter)
+
+
+Transmit Signal
+% bbReader = comm.BasebandFileReader('prf1000.bb')
+tx = comm.SDRuTransmitter(Platform="B210",SerialNum='31577EF',...
+    CenterFrequency=fc,...
+    ClockSource="External",...
+    MasterClockRate =fs,...
+    InterpolationFactor=1,...  
+    Gain=70)   
+
+% txData = fm()
+RunTime_s = 30 %seconds
+Reps = prf * RunTime_S
+txData = repmat(fm(),Reps,1)
+tx(txData)
+
+release(tx)
