@@ -1,0 +1,75 @@
+# This example configuration outlines how to configure the srsRAN Project gNB to create a single TDD cell
+# transmitting in band 78, with 20 MHz bandwidth and 30 kHz sub-carrier-spacing. A USRP B200 is configured
+# as the RF frontend using split 8. Note in this example an external clock source is not used, so the sync
+# is not defined and the default is used
+
+# Autodetected card type: sysmoISIM-SJA5
+# Generated card parameters :
+#  > Name     : Magic
+#  > SMSP     : e1ffffffffffffffffffffffff0581005155f5ffffffffffff000000
+#  > ICCID    : 8949440000001380805
+#  > MCC/MNC  : 001/01
+#  > IMSI     : 001010000138080
+#  > Ki       : 4d56753bfd400a9560e7ccd4debca476
+#  > OPC      : 072bf504aaba377cbce5ecbde06f6b0a
+#  > ACC      : None
+#  > ADM1(hex): 3638313436363634
+#  > OPMODE   : None
+# Programming ...
+
+cu_cp:
+  amf:
+    addr: 127.0.0.5
+    port: 38412
+    bind_addr: 127.0.0.5
+    supported_tracking_areas:
+      - tac: 1
+        plmn_list:
+          - plmn: "00101"
+            tai_slice_support_list:
+              - sst: 1
+
+ru_sdr:
+  device_driver: uhd
+  device_args: type=b200,num_recv_frames=64,num_send_frames=64
+  srate: 23.04
+  otw_format: sc12
+  tx_gain: 75
+  rx_gain: 50
+  clock: external
+  sync: external
+  # time_alignment_calibration: 0
+
+cell_cfg:
+  # dl_arfcn: 632628 #3489.42MHz
+  # dl_arfcn: 623484 #3352.26MHz
+  # dl_arfcn: 156000 #780.5MHz
+  dl_arfcn: 627340  #B78 3410.1MHz
+  band: 78
+  channel_bandwidth_MHz: 20
+  common_scs: 30
+  plmn: "00101"
+  tac: 1
+  pci: 1
+
+  pucch:
+    p0_nominal: -84  
+
+  ssb:
+    # ssb_period: 10                          # Optional UINT (10). Sets the period of SSB scheduling in milliseconds. Supported: [5, 10, 20].
+    ssb_block_power_dbm: -25 
+
+log:
+  filename: /tmp/gnb.log
+  all_level: info
+  # mac_level: debug
+
+pcap:
+  mac_enable: false
+  mac_filename: /tmp/gnb_mac.pcap
+  ngap_enable: false
+  ngap_filename: /tmp/gnb_ngap.pcap
+
+metrics:
+  autostart_stdout_metrics: true       # Optional BOOLEAN (false). Sets whether or note to autostart stdout metrics reporting. Supported [false, true].
+  enable_json_metrics: true

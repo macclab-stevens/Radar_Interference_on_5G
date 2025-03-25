@@ -1,4 +1,5 @@
-for i = 10:10:200
+for i = 5:5:505
+
     fprintf('Current PRF: %d\n', i);
     RadarTx(i)
     pause(1)
