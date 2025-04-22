@@ -44,8 +44,8 @@ simParameters.NumRBs = 51;
 simParameters.SCS = 15*2^(simParameters.numerology); % kHz
 simParameters.DLBandwidth = 20e6; % Hz
 simParameters.ULBandwidth = 20e6; % Hz
-simParameters.DLCarrierFreq = 3.595e9; % Hz
-simParameters.ULCarrierFreq = 3.595e9; % Hz
+simParameters.DLCarrierFreq = 2.595e9; % Hz
+simParameters.ULCarrierFreq = 2.595e9; % Hz
 %% 
 
 % Specify the TDD DL-UL pattern. The reference subcarrier spacing used for calculating slot duration for the pattern is assumed to be same as actual subcarrier spacing used for transmission as defined by simParameters.SCS. Keep only the symbols intended for guard period during DLULPeriodicity with type (DL or UL) unspecified.

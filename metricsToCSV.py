@@ -12,6 +12,7 @@ def process_sim_parameters(sim_params_file):
         # Access the main simParameters structure
         sim_parameters_struct = sim_params.get("simParameters", None)
         if sim_parameters_struct is None:
+
             raise ValueError("simParameters not found in .mat file.")
 
         sim_parameters = sim_parameters_struct[0, 0]  # Access the first (and only) instance
@@ -287,12 +288,15 @@ def process_directory(root_dir):
                 filepath = os.path.join(subdir, file)
                 #print(f"Processing file: {filepath}")  # Debugging: Log the file being processed
 
-                metrics, radar_params, tti, PulseBWoffset, numRBs, NumFrames,pulseAttenuation = process_mat_file(filepath, sim_params_file)
-                if metrics:
-                    output_file = os.path.join(subdir, "processed_metrics.csv")
-                    save_metrics_to_csv(metrics, radar_params, tti, PulseBWoffset, numRBs, NumFrames,pulseAttenuation, output_file, folder_name)
-                    metrics_processed = True
-
+                try:
+                    metrics, radar_params, tti, PulseBWoffset, numRBs, NumFrames,pulseAttenuation = process_mat_file(filepath, sim_params_file)
+                    if metrics:
+                        output_file = os.path.join(subdir, "processed_metrics.csv")
+                        save_metrics_to_csv(metrics, radar_params, tti, PulseBWoffset, numRBs, NumFrames,pulseAttenuation, output_file, folder_name)
+                        metrics_processed = True
+                except Exception as e:
+                    #print(f"Error processing {filepath}: {e}")
+                    return None, None, None
         # if not metrics_processed:
             #print(f"No simulationMetrics.mat processed for folder: {folder_name}")
 
@@ -324,6 +328,6 @@ def generateMainCSV(root_dir):
 
 # Main
 if __name__ == "__main__":
-    root_directory = "./Run_30Khz_BW_test3_prf3.002k_w_20atten/"  # Change this to the root directory of your files
+    root_directory = "./Run_30Khz_Prf_2_10-5000_20250421_100Mbps_3/"  # Change this to the root directory of your files
     process_directory(root_directory)
     generateMainCSV(root_directory)

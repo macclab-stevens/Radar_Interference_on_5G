@@ -1,7 +1,7 @@
 % File: /Users/ericforbes/Documents/GitHub/NRTPIS/simulationRuns.m
 
 % Initialize simulation parameters
-simParametersBase.folderName = 'Run_30Khz_PWR_test1/';
+simParametersBase.folderName = 'Run_30Khz_1UE_Prf_0-5k_test20250418_1/';
 simParametersBase.numerology = 1; % 0 = 15KHz, 1 = 30KHz
 
 % Define supported bandwidths
@@ -19,7 +19,7 @@ fs = 7680000 * 2^simParametersBase.numerology;
 simParametersBase.RadarOn = true;
 
 % Generate PRF and PulseWidth steps
-prf_steps = 1990:5:2010;
+prf_steps = 10:10:5000;
 % prf_steps = prf_steps(mod(fs, prf_steps) == 0) % Ensure divisors of fs
 pwSteps = linspace(0.1e-6, 100e-6, 100)%0.1:0.2:100;
 
@@ -30,8 +30,10 @@ ttis = [2, 4, 7, 14];
 PulsePowerAtten = 20:-5:-100;
 
 % Create all combinations of TTI and radarBWoffset
-[ttiGrid, prf_stepsGrid,attenGrid] = ndgrid(ttis, prf_steps,PulsePowerAtten);
-ttiPairs = [ttiGrid(:), prf_stepsGrid(:),attenGrid(:)]
+% [ttiGrid, prf_stepsGrid,attenGrid] = ndgrid(ttis, prf_steps,PulsePowerAtten);
+[ttiGrid, prf_stepsGrid] = ndgrid(ttis, prf_steps);
+% ttiPairs = [ttiGrid(:), prf_stepsGrid(:),attenGrid(:)]
+ttiPairs = [ttiGrid(:), prf_stepsGrid(:)]
 numCombinations = size(ttiPairs, 1);
 
 fprintf("NumCombinations %f \n",numCombinations)
@@ -47,7 +49,8 @@ parfor i = 1:numSimulations
     simParameters.TTIGranularity = ttiPairs(i, 1);
     simParameters.prf = ttiPairs(i, 2);
     simParameters.PulseWidth = 50 * 1e-6; %ttiPairs(i, 2);%
-    simParameters.pulseAttenuation = ttiPairs(i, 3);
+    % simParameters.pulseAttenuation = ttiPairs(i, 3);
+    simParameters.pulseAttenuation = 0
     % Set slotOrSymbol based on TTIGranularity
     if simParameters.TTIGranularity == 14
         simParameters.slotOrSymbol = 0;
@@ -64,14 +67,14 @@ parfor i = 1:numSimulations
     simParameters.PulseBW = 20e6;
     simParameters.PulseBWoffset = 0%9.5e6;
     simParameters.schStrat = "RR";
-    simParameters.mcsInt = 10;
-    simParameters.NumFramesSim = 5;
-    simParameters.mcsTable = '256QAM';
-    simParameters.NumUEs = 20;
+    % simParameters.mcsInt = 10;
+    simParameters.NumFramesSim = 20;
+    simParameters.mcsTable = '64QAM';
+    simParameters.NumUEs = 1;
 
-    simParameters.UEPosition = repmat([300, 0, 0], simParameters.NumUEs, 1);
-    simParameters.ulAppDataRate = repmat(10e6, simParameters.NumUEs, 1);
-    simParameters.dlAppDataRate = repmat(10e6, simParameters.NumUEs, 1);
+    simParameters.UEPosition = repmat([0, 0, 1], simParameters.NumUEs, 1);
+    simParameters.ulAppDataRate = repmat(100e6, simParameters.NumUEs, 1);
+    simParameters.dlAppDataRate = repmat(100e6, simParameters.NumUEs, 1);
 
     % Generate output folder structure
     dt = datestr(now, 'yymmdd-HHMMSS');
