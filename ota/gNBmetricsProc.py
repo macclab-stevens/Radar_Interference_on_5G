@@ -7,6 +7,7 @@ import argparse
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 
 def convert_metrics_to_csv(input_file, output_file):
     with open(input_file, 'r') as infile, open(output_file, 'w', newline='') as outfile:
@@ -75,8 +76,9 @@ def find_middle_low_point(csv_file, column_name='dl_brate'):
     dl_brate = dl_brate.dropna()
     
     # Smooth the data using a rolling window to ignore blips
-    smoothed_dl_brate = dl_brate.rolling(window=5, center=True).mean()
-    
+    smoothed_dl_brate = dl_brate.rolling(window=1, center=True).mean()
+    # Drop bitrate values that are 0
+    smoothed_dl_brate = smoothed_dl_brate[smoothed_dl_brate != 0].dropna()
     # Define thresholds for detecting the initial ramp-up and the drop-off point
     if column_name == 'Bitrate':
         ramp_up_threshold = 0.9 * 44
@@ -120,27 +122,44 @@ def find_middle_low_point(csv_file, column_name='dl_brate'):
     
     print(f"Start index: {start_index}")
     
+   
+
     # Normalize x-values to start from zero
     x = np.arange(start_index, len(smoothed_dl_brate))
     y = smoothed_dl_brate[start_index:].dropna()  # Drop NaN values resulting from rolling window
     x = x[:len(y)]  # Adjust x to match the length of y
     
-    # Fit a quadratic polynomial to the smoothed data
-    coefficients = np.polyfit(x, y, 2)
-    polynomial = np.poly1d(coefficients)
-    
-    # Find the minimum value of the polynomial within the range
-    x_fit = np.linspace(x.min(), x.max(), 100)
-    y_fit = polynomial(x_fit)
-    min_x_value = x_fit[np.argmin(y_fit)]
-    
-    # Find the average low point in the smoothed data around the min_x_value +/- 1
-    min_x_index = int(min_x_value)
-    low_point_values = y[max(0, min_x_index - 1):min(len(y), min_x_index + 2)]
-    if len(low_point_values) == 0:
-        closest_index = np.argmin(np.abs(x - min_x_value))
-        low_point_values = y[max(0, closest_index - 1):min(len(y), closest_index + 2)]
-    average_low_point = low_point_values.mean()
+    # Exclude the last few values to avoid selecting trailing zeros
+    exclusion_count = 5  # Number of values to exclude from the end
+    x = x[:-exclusion_count]
+    y = y[:-exclusion_count]
+
+    # Ensure x and y are not empty
+    if len(x) == 0 or len(y) == 0:
+        print("Error: x or y is empty. Skipping polynomial fitting.")
+        return None
+
+    # Find the stop index by walking back from the end of the array
+    stop_index = -1
+    threshold_value = 0.9 * 44  # 90% of 44
+    for i in range(len(smoothed_dl_brate) - 1, -1, -1):  # Iterate backward
+        if smoothed_dl_brate.iloc[i] >= threshold_value:
+            stop_index = smoothed_dl_brate.index[i]
+            break
+
+    if stop_index == -1:
+        print("No valid stop index found where the bitrate is at least 90% of 44.")
+        return
+
+    print(f"Stop index: {stop_index}")
+ 
+    # Find the avg of the loweset values 
+    # pd.set_option('display.max_rows', None)  # Show all rows
+    # print(dl_brate)
+    bitrate_range = smoothed_dl_brate[start_index:stop_index]
+    # print(bitrate_range)
+    lowest_values = bitrate_range.nsmallest(10)
+    average_low_point = lowest_values.mean()
     
     # Convert the average low point from bytes per second to megabits per second (Mbps)
     if column_name == 'dl_brate':
@@ -149,15 +168,36 @@ def find_middle_low_point(csv_file, column_name='dl_brate'):
         average_low_point_mbps = average_low_point
     print(f"Average low point of {column_name} between the two highs: {average_low_point_mbps} Mbps")
     
-    # Plot the data and the fitted curve
-    plt.clf()
-    plt.plot(x, y, 'o', label='Data')
-    plt.plot(x_fit, y_fit, '-', label='Fitted curve')
-    plt.axvline(x=min_x_value, color='r', linestyle='--', label='Min X Value')
-    plt.xlabel('Index')
-    plt.ylabel(column_name)
-    plt.legend()
-    plt.savefig(csv_file.replace('.csv', '_plot.png'))
+
+    # Ensure the 'png' folder exists
+    png_folder = os.path.join(os.getcwd(), 'png')
+    if not os.path.exists(png_folder):
+        os.makedirs(png_folder)
+
+    
+
+    # # Plot the data and the fitted curve
+    # plt.clf()
+    # plt.plot(x, y, label='Bitrate')
+
+    # # Set major x-axis ticks every 100
+    # plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(500))
+
+    # # Set minor x-axis ticks every 200
+    # plt.gca().xaxis.set_minor_locator(ticker.MultipleLocator(250))
+
+    # # Add labels and title
+    # plt.xlabel('X-Axis Label')
+    # plt.ylabel('Y-Axis Label')
+    # plt.title('Graph Title')
+
+    # # Show grid and legend
+    # plt.grid(True)
+    # plt.legend()
+
+    # # Save or display the plot
+    # plt.savefig('output_plot.png')
+    # # plt.show()
 
     return average_low_point_mbps
 
@@ -187,6 +227,9 @@ def process_all_iperf_files(directory):
             prf = filename.split('_')[0]  # Assuming the PRF is the first part of the filename
             results.append([prf, filename, average_low_point_mbps])
     
+    # Sort results by PRF (first column in the results list)
+    results.sort(key=lambda x: x[0])  # Assuming PRF is the first element in each row
+
     output_file = os.path.join(directory, 'iperfLowPoints.csv')
     with open(output_file, 'w', newline='') as outfile:
         writer = csv.writer(outfile)
@@ -204,11 +247,28 @@ def plot_iperf_low_points(csv_file):
     plt.ylabel('Average Low Point (Mbps)')
     plt.title('Average Low Point vs PRF')
     
-    # Reduce the number of ticks on the x-axis
-    df.fillna(0)
+    # Rotate x-axis text to be vertical
+    plt.xticks(rotation=90)
     
-    plt.savefig(csv_file.replace('.csv', '_plot.png'))
+    # Ensure the 'png' folder exists
+    png_folder = os.path.join(os.getcwd(), 'png')
+    if not os.path.exists(png_folder):
+        os.makedirs(png_folder)
+
+    # Save the plot in the 'png' folder
+    plot_file = os.path.join(png_folder, os.path.basename(csv_file).replace('.csv', '_plot.png'))
+    plt.savefig(plot_file)
+    print(f"Plot saved to: {plot_file}")
     plt.show()
+
+def convert_all_iperf_files_in_folder(folder):
+    """Convert all .iperf files in the specified folder to .csv files."""
+    for file in os.listdir(folder):
+        if file.endswith('.iperf'):
+            input_file = os.path.join(folder, file)
+            output_file = os.path.join(folder, file.replace('.iperf', '.iperf.csv'))
+            convert_iperf_to_csv(input_file, output_file)
+            print(f"Converted {input_file} to {output_file}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Convert .metrics files to .csv and analyze dl_brate')
@@ -219,6 +279,7 @@ if __name__ == "__main__":
     parser.add_argument('-I', '--iperf-folder', type=str, help='Find the middle low point of bitrate in all iperf .csv files in the specified folder')
     parser.add_argument('-p', '--iperf', type=str, help='Convert an iperf report to a .csv file')
     parser.add_argument('-l', '--plot-iperf-low-points', type=str, help='Plot the iperfLowPoints.csv file')
+    parser.add_argument('-C', '--convert-iperf-folder', type=str, help='Convert all .iperf files in the specified folder to .csv files')
 
     args = parser.parse_args()
 
@@ -237,5 +298,7 @@ if __name__ == "__main__":
         convert_iperf_to_csv(args.iperf, output_file)
     elif args.plot_iperf_low_points:
         plot_iperf_low_points(args.plot_iperf_low_points)
+    elif args.convert_iperf_folder:
+        convert_all_iperf_files_in_folder(args.convert_iperf_folder)
     else:
-        print("Please specify either a folder with -f, a file with -c, a CSV file with -m, an iperf file with -p, or an iperf CSV file with -i or -I")
+        print("Please specify either a folder with -f, a file with -c, a CSV file with -m, an iperf file with -p, or an iperf CSV file with -i, -I, or -C")

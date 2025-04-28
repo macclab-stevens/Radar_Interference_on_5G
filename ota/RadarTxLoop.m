@@ -1,4 +1,5 @@
-for i = 5:5:505
+system(sprintf('ssh m70q /home/eric/srsRAN_Project/scripts/PRFLogCollectorCTL.sh %s','stop'));
+for i = 2500:25:5000
 
     fprintf('Current PRF: %d\n', i);
     RadarTx(i)

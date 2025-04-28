@@ -1,6 +1,6 @@
 function RadarTx(prf)
 fprintf("Starting Script")
-prf;
+% prf;
 % folderName = 'Run_30Khz_PulsePowerLevels_3/';
 numerology = 1; % 0 = 15KHz, 1 = 30KHz
 fs = 30720000;
@@ -10,14 +10,14 @@ end
 
 % Sampling frequency
 
-fc = 3410.1e6; %Center Frequency
+fc = 3418.0e6; %Center Frequency
 if nargin < 1
     prf = 1;
 end
 % PulseWidth = 100 * 1e-6; 
 PulseWidth = 50e-6; 
 pulseAttenuation = 0;
-PulseBW = 20e6;
+PulseBW = 1e6;
 FreqOffset = 0e6;%9.5e6;
 % NumFramesSim = 5000; %each is 10ms. 5= 50ms, 10 = 100ms, 100 = 1s
 
@@ -47,12 +47,12 @@ tx = comm.SDRuTransmitter(Platform="B210",SerialNum='31577EF',...
     ClockSource="External",...
     MasterClockRate =fs,...
     InterpolationFactor=1,...  
-    Gain=80)   
+    Gain=65)   
 
 % txData = fm()
 RunTime_s = 20; %seconds
 Reps = prf * RunTime_s;
-for x = 1:1:10
+for x = 1:1:2
     fprintf("setting up data\n")
     txData = repmat(fm(),Reps,1);
     

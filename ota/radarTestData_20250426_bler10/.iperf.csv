@@ -1,0 +1,16 @@
+Time,Transfer,Bitrate,Retr,Cwnd
+local,port,connected,10.45.0.5,5201
+0.00,1.79,15.0,0,KBytes
+1.00,5.00,41.9,0,KBytes
+2.00,5.50,46.1,0,KBytes
+3.00,5.50,46.1,0,KBytes
+4.00,5.62,47.2,0,MBytes
+5.00,5.12,43.0,0,MBytes
+6.00,5.12,43.0,0,MBytes
+7.00,4.88,40.9,0,MBytes
+8.00,5.00,41.9,0,MBytes
+9.00,5.12,43.0,0,MBytes
+10.00,5.00,41.9,0,MBytes
+11.00,384,35.9,0,MBytes
+0.00,54.0,40.9,0,
+0.00,0.00,0.00,receiver,

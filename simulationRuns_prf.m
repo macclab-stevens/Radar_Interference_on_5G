@@ -1,7 +1,7 @@
 % File: /Users/ericforbes/Documents/GitHub/NRTPIS/simulationRuns.m
 
 % Initialize simulation parameters
-simParametersBase.folderName = 'Run_30Khz_Prf_2_10-5000_20250421_100Mbps_3/';
+simParametersBase.folderName = 'Run_30Khz_Prf_2_10-5000_20250424_50Mbps_1UE/';
 simParametersBase.numerology = 1; % 0 = 15KHz, 1 = 30KHz
 
 % Define supported bandwidths
@@ -47,7 +47,7 @@ parfor i = 1:numSimulations
     simParameters.TTIGranularity = ttiPairs(i,1);
     simParameters.prf = ttiPairs(i, 2);
     simParameters.PulseWidth = 50 * 1e-6; %ttiPairs(i, 2);%
-    simParameters.pulseAttenuation = 0% ttiPairs(i, 2);
+    simParameters.pulseAttenuation = 30% ttiPairs(i, 2);
     % Set slotOrSymbol based on TTIGranularity
     if simParameters.TTIGranularity == 14
         simParameters.slotOrSymbol = 0;
@@ -65,14 +65,14 @@ parfor i = 1:numSimulations
     simParameters.PulseBWoffset = 0%9.5e6;
     simParameters.schStrat = "RR";
     simParameters.mcsInt = 10;
-    simParameters.NumFramesSim = 10;
+    simParameters.NumFramesSim = 5;
     simParameters.mcsTable = '64QAM';
     simParameters.NumUEs = 1;
 
     simParameters.UEPosition = repmat( ...
-        [3, 0, 0], simParameters.NumUEs, 1);
-    simParameters.ulAppDataRate = repmat(10e6, simParameters.NumUEs, 1);
-    simParameters.dlAppDataRate = repmat(10e6, simParameters.NumUEs, 1);
+        [1, 0, 0], simParameters.NumUEs, 1);
+    simParameters.ulAppDataRate = repmat(50e6, simParameters.NumUEs, 1);
+    simParameters.dlAppDataRate = repmat(50e6, simParameters.NumUEs, 1);
 
     % Generate output folder structure
     dt = datestr(now, 'yymmdd-HHMMSS');

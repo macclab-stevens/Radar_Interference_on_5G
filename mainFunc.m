@@ -341,7 +341,7 @@ pulse = pulse_parts;
 % end
 
 % Configure the channel model
-  Apply_ChannelModel = true;
+  Apply_ChannelModel = false;
   if Apply_ChannelModel
       % CDL
       % channel = nrCDLChannel;

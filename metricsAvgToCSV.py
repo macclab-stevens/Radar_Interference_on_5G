@@ -24,5 +24,5 @@ def generateAvgCsv(folder_name):
     return
 # Main
 if __name__ == "__main__":
-    root_directory = "./Run_30Khz_Prf_2_10-5000_20250421_100Mbps_3/"  # Change this to the root directory of your files
+    root_directory = "./Run_30Khz_Prf_2_10-5000_20250424_50Mbps_1UE/"  # Change this to the root directory of your files
     generateAvgCsv(root_directory)
