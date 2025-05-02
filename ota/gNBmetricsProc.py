@@ -176,28 +176,30 @@ def find_middle_low_point(csv_file, column_name='dl_brate'):
 
     
 
-    # # Plot the data and the fitted curve
-    # plt.clf()
-    # plt.plot(x, y, label='Bitrate')
+    # Plot the data and the fitted curve
+    plt.clf()
+    plt.scatter(x, y, label='Bitrate')
 
-    # # Set major x-axis ticks every 100
-    # plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(500))
+    # Set major x-axis ticks every 100
+    # plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(5))
 
-    # # Set minor x-axis ticks every 200
-    # plt.gca().xaxis.set_minor_locator(ticker.MultipleLocator(250))
+    # Set minor x-axis ticks every 200
+    # plt.gca().xaxis.set_minor_locator(ticker.MultipleLocator(1))
 
-    # # Add labels and title
-    # plt.xlabel('X-Axis Label')
-    # plt.ylabel('Y-Axis Label')
-    # plt.title('Graph Title')
+    # Add labels and title
+    plt.xlabel('Time (s)')
+    plt.ylabel('UE bitrate (Mbps)')
+    plt.title('OTA Experiment w/ Pulsed Radar Interfernence')
 
-    # # Show grid and legend
+
+    # Show grid and legend
     # plt.grid(True)
     # plt.legend()
 
-    # # Save or display the plot
+    # Save or display the plot
     # plt.savefig('output_plot.png')
-    # # plt.show()
+    plt.show()
+
 
     return average_low_point_mbps
 
